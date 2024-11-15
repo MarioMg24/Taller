@@ -4,44 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Usuarios con Firebase</title>
+  <!-- Enlace a Tailwind CSS para el diseño y estilo de la interfaz -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Script para utilizar SweetAlert2 para mostrar alertas amigables al usuario -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <!-- Script externo que contiene la lógica para gestionar usuarios -->
   <script type="module" src="script.js" defer></script>
+  <!-- Enlace a Font Awesome para iconos, si es necesario -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen flex items-center justify-center p-4">
+  <!-- Contenedor principal del formulario y la tabla de usuarios -->
   <div class="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
+    <!-- Título del formulario para agregar o editar usuarios -->
     <h2 id="formTitle" class="text-2xl font-semibold text-gray-700 mb-6">Agregar Usuario</h2>
+    <!-- Formulario para agregar o editar un usuario -->
     <form id="userForm" class="space-y-4 bg-blue-50 p-4 rounded-lg shadow">
-      <!-- Form fields remain unchanged -->
+      <!-- Campo de entrada para el nombre del usuario -->
       <div>
         <label for="nombre" class="block text-sm font-medium text-gray-600">Nombre</label>
         <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
-
+      <!-- Campo de entrada para el apellido del usuario -->
       <div>
         <label for="apellido" class="block text-sm font-medium text-gray-600">Apellido</label>
         <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
-
+      <!-- Campo de entrada para la edad del usuario -->
       <div>
         <label for="edad" class="block text-sm font-medium text-gray-600">Edad</label>
         <input type="number" id="edad" name="edad" placeholder="Ingresa tu edad" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
-
+      <!-- Campo de entrada para la dirección del usuario -->
       <div>
         <label for="direccion" class="block text-sm font-medium text-gray-600">Dirección</label>
         <input type="text" id="direccion" name="direccion" placeholder="Ingresa tu dirección" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
-
+      <!-- Botón para guardar el usuario (agregar o editar) -->
       <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-200">Guardar</button>
+      <!-- Campo oculto para almacenar el ID del usuario que se está editando -->
       <input type="hidden" id="userId" value="">
     </form>
 
+    <!-- Sección para mostrar la lista de usuarios guardados -->
     <div id="output" class="mt-8">
+      <!-- Título de la tabla de usuarios -->
       <h3 class="text-xl font-semibold text-gray-700 mb-4">Lista de Usuarios Guardados:</h3>
+      <!-- Contenedor con la tabla que muestra los usuarios -->
       <div class="overflow-x-auto bg-blue-50 p-4 rounded-lg shadow">
+        <!-- Tabla de usuarios -->
         <table class="min-w-full bg-white border border-gray-300">
+          <!-- Encabezado de la tabla -->
           <thead>
             <tr class="bg-blue-200">
               <th class="py-2 px-4 border-b text-left text-gray-600">Nombre</th>
@@ -51,6 +64,7 @@
               <th class="py-2 px-4 border-b text-left text-gray-600">Acciones</th>
             </tr>
           </thead>
+          <!-- Cuerpo de la tabla donde se mostrarán los usuarios -->
           <tbody id="userTableBody"></tbody>
         </table>
       </div>

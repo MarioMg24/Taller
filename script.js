@@ -1,52 +1,54 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
+// Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAuTlpLnKheu7cKeYsBv2diq_uIzL4MMNM",
-  authDomain: "taller-3df83.firebaseapp.com",
-  projectId: "taller-3df83",
-  storageBucket: "taller-3df83.firebasestorage.app",
-  messagingSenderId: "518254665478",
-  appId: "1:518254665478:web:af95f936b11fe5c6ef0887",
-  measurementId: "G-3FYZPNLWM0"
+  apiKey: "AIzaSyAuTlpLnKheu7cKeYsBv2diq_uIzL4MMNM", // Clave API de tu proyecto de Firebase
+  authDomain: "taller-3df83.firebaseapp.com", // Dominio de autenticación de tu proyecto
+  projectId: "taller-3df83", // ID del proyecto
+  storageBucket: "taller-3df83.firebasestorage.app", // URL del bucket de almacenamiento
+  messagingSenderId: "518254665478", // ID del remitente
+  appId: "1:518254665478:web:af95f936b11fe5c6ef0887", // ID de la aplicación
+  measurementId: "G-3FYZPNLWM0" // ID de medición
 };
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const db = getDatabase(app); // Obtiene la base de datos de Firebase
 
+// Maneja el evento 'submit' del formulario para agregar o actualizar un usuario
 document.getElementById('userForm').addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Previene la acción por defecto del formulario
   const nombre = document.getElementById('nombre').value;
   const apellido = document.getElementById('apellido').value;
   const edad = parseInt(document.getElementById('edad').value);
   const direccion = document.getElementById('direccion').value;
   const userId = document.getElementById('userId').value;
-
+ // Si hay un 'userId', actualiza el usuario existente
   if (userId) {
     const userRef = ref(db, 'usuarios/' + userId);
     update(userRef, { nombre, apellido, edad, direccion }).then(() => {
-      Swal.fire({
+      Swal.fire({ // Muestra una alerta de éxito al actualizar el usuario
         icon: 'success',
         title: 'Usuario actualizado',
         text: 'El usuario ha sido actualizado correctamente.',
         timer: 2000,
         showConfirmButton: false
       });
+      // Limpia el formulario y restablece el estado
       document.getElementById('userForm').reset();
       document.getElementById('formTitle').innerText = 'Agregar Usuario';
       document.getElementById('userId').value = '';
     }).catch((error) => {
-      Swal.fire({
+      Swal.fire({ // Muestra una alerta de error si la actualización falla
         icon: 'error',
         title: 'Error',
         text: 'No se pudo actualizar el usuario. Intenta nuevamente.',
       });
     });
-  } else {
+  } else {  // Si no hay 'userId', crea un nuevo usuario
     const userRef = ref(db, 'usuarios/');
     push(userRef, { nombre, apellido, edad, direccion }).then(() => {
-      Swal.fire({
+      Swal.fire({ // Muestra una alerta de éxito al agregar el usuario
         icon: 'success',
         title: 'Usuario agregado',
         text: 'El usuario ha sido agregado correctamente.',
@@ -54,7 +56,7 @@ document.getElementById('userForm').addEventListener('submit', (e) => {
         showConfirmButton: false
       });
     }).catch((error) => {
-      Swal.fire({
+      Swal.fire({  // Muestra una alerta de error si la adición falla
         icon: 'error',
         title: 'Error',
         text: 'No se pudo agregar el usuario. Intenta nuevamente.',
@@ -62,17 +64,17 @@ document.getElementById('userForm').addEventListener('submit', (e) => {
     });
   }
 
-  e.target.reset();
+  e.target.reset(); // Resetea el formulario después de la operación
 });
-
+// Escucha los cambios en la referencia de usuarios y actualiza la tabla
 const userRef = ref(db, 'usuarios/');
 onValue(userRef, (snapshot) => {
   const userTableBody = document.getElementById('userTableBody');
-  userTableBody.innerHTML = '';
-  snapshot.forEach((childSnapshot) => {
-    const data = childSnapshot.val();
-    const userId = childSnapshot.key;
-    const row = document.createElement('tr');
+  userTableBody.innerHTML = ''; // Limpia la tabla antes de llenarla con nuevos datos
+  snapshot.forEach((childSnapshot) => { 
+    const data = childSnapshot.val(); // Obtiene los datos del usuario
+    const userId = childSnapshot.key; // Obtiene la clave del usuario
+    const row = document.createElement('tr'); // Crea una fila para mostrar al usuario
     row.innerHTML = `
       <td class="py-2 px-4 border-b">${data.nombre}</td>
       <td class="py-2 px-4 border-b">${data.apellido}</td>
@@ -95,23 +97,24 @@ onValue(userRef, (snapshot) => {
         </div>
       </td>
     `;
-    userTableBody.appendChild(row);
+    userTableBody.appendChild(row); // Añade la fila a la tabla
   });
 });
-
+// Función para editar un usuario
 window.editUser = function(userId) {
   const userRef = ref(db, 'usuarios/' + userId);
   onValue(userRef, (snapshot) => {
+    // Rellena los campos del formulario con los datos del usuario
     const data = snapshot.val();
     document.getElementById('nombre').value = data.nombre;
     document.getElementById('apellido').value = data.apellido;
     document.getElementById('edad').value = data.edad;
     document.getElementById('direccion').value = data.direccion;
-    document.getElementById('userId').value = userId;
-    document.getElementById('formTitle').innerText = 'Editar Usuario';
+    document.getElementById('userId').value = userId; // Establece el userId para editar
+    document.getElementById('formTitle').innerText = 'Editar Usuario'; // Cambia el título del formulario
   }, { onlyOnce: true });
 }
-
+// Función para eliminar un usuario
 window.deleteUser = function(userId) {
   Swal.fire({
     title: '¿Estás seguro?',
@@ -126,7 +129,7 @@ window.deleteUser = function(userId) {
     if (result.isConfirmed) {
       const userRef = ref(db, 'usuarios/' + userId);
       remove(userRef).then(() => {
-        Swal.fire({
+        Swal.fire({ // Muestra una alerta de éxito al eliminar el usuario
           icon: 'success',
           title: 'Eliminado',
           text: 'El usuario ha sido eliminado correctamente.',
@@ -134,7 +137,7 @@ window.deleteUser = function(userId) {
           showConfirmButton: false
         });
       }).catch((error) => {
-        Swal.fire({
+        Swal.fire({ // Muestra una alerta de error si la eliminación falla
           icon: 'error',
           title: 'Error',
           text: 'No se pudo eliminar el usuario. Intenta nuevamente.',
