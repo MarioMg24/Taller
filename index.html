@@ -4,163 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Usuarios con Firebase</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script type="module" src="script.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 p-4">
-
-  <div class="max-w-lg mx-auto bg-white p-6 shadow-md rounded">
-    <h2 id="formTitle" class="text-2xl font-bold mb-4">Agregar Usuario</h2>
-    <form id="userForm" class="space-y-4">
+<body class="bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
+    <h2 id="formTitle" class="text-2xl font-semibold text-gray-700 mb-6">Agregar Usuario</h2>
+    <form id="userForm" class="space-y-4 bg-blue-50 p-4 rounded-lg shadow">
+      <!-- Form fields remain unchanged -->
       <div>
-        <label for="nombre" class="block text-gray-700 font-medium">Nombre</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <label for="nombre" class="block text-sm font-medium text-gray-600">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
 
       <div>
-        <label for="apellido" class="block text-gray-700 font-medium">Apellido</label>
-        <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <label for="apellido" class="block text-sm font-medium text-gray-600">Apellido</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
 
       <div>
-        <label for="edad" class="block text-gray-700 font-medium">Edad</label>
-        <input type="number" id="edad" name="edad" placeholder="Ingresa tu edad" class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <label for="edad" class="block text-sm font-medium text-gray-600">Edad</label>
+        <input type="number" id="edad" name="edad" placeholder="Ingresa tu edad" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
 
       <div>
-        <label for="direccion" class="block text-gray-700 font-medium">Dirección</label>
-        <input type="text" id="direccion" name="direccion" placeholder="Ingresa tu dirección" class="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <label for="direccion" class="block text-sm font-medium text-gray-600">Dirección</label>
+        <input type="text" id="direccion" name="direccion" placeholder="Ingresa tu dirección" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
       </div>
 
-      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Guardar</button>
-      <input type="hidden" id="userId" value=""> <!-- Campo oculto para el ID del usuario -->
+      <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-200">Guardar</button>
+      <input type="hidden" id="userId" value="">
     </form>
 
-    <!-- Contenedor para visualizar datos en una tabla -->
-    <div id="output" class="mt-6">
-      <h3 class="text-xl font-bold mb-2">Lista de Usuarios Guardados:</h3>
-      <table class="min-w-full bg-white border border-gray-300">
-        <thead>
-          <tr>
-            <th class="py-2 px-4 border-b">Nombre</th>
-            <th class="py-2 px-4 border-b">Apellido</th>
-            <th class="py-2 px-4 border-b">Edad</th>
-            <th class="py-2 px-4 border-b">Dirección</th>
-            <th class="py-2 px-4 border-b">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="userTableBody"></tbody>
-      </table>
+    <div id="output" class="mt-8">
+      <h3 class="text-xl font-semibold text-gray-700 mb-4">Lista de Usuarios Guardados:</h3>
+      <div class="overflow-x-auto bg-blue-50 p-4 rounded-lg shadow">
+        <table class="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr class="bg-blue-200">
+              <th class="py-2 px-4 border-b text-left text-gray-600">Nombre</th>
+              <th class="py-2 px-4 border-b text-left text-gray-600">Apellido</th>
+              <th class="py-2 px-4 border-b text-left text-gray-600">Edad</th>
+              <th class="py-2 px-4 border-b text-left text-gray-600">Dirección</th>
+              <th class="py-2 px-4 border-b text-left text-gray-600">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
-
-  <script type="module">
-    // Importar las funciones necesarias de Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAuTlpLnKheu7cKeYsBv2diq_uIzL4MMNM",
-      authDomain: "taller-3df83.firebaseapp.com",
-      projectId: "taller-3df83",
-      storageBucket: "taller-3df83.firebasestorage.app",
-      messagingSenderId: "518254665478",
-      appId: "1:518254665478:web:af95f936b11fe5c6ef0887",
-      measurementId: "G-3FYZPNLWM0"
-    };
-
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // Manejar el envío del formulario
-    document.getElementById('userForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nombre = document.getElementById('nombre').value;
-      const apellido = document.getElementById('apellido').value;
-      const edad = parseInt(document.getElementById('edad').value);
-      const direccion = document.getElementById('direccion').value;
-      const userId = document.getElementById('userId').value;
-
-      if (userId) {
-        // Editar usuario existente
-        const userRef = ref(db, 'usuarios/' + userId);
-        update(userRef, {
-          nombre: nombre,
-          apellido: apellido,
-          edad: edad,
-          direccion: direccion
-        }).then(() => {
-          alert('Usuario actualizado correctamente.');
-          document.getElementById('userForm').reset();
-          document.getElementById('formTitle').innerText = 'Agregar Usuario';
-          document.getElementById('userId').value = '';
-        });
-      } else {
-        // Agregar nuevo usuario
-        const userRef = ref(db, 'usuarios/');
-        push(userRef, {
-          nombre: nombre,
-          apellido: apellido,
-          edad: edad,
-          direccion: direccion
-        });
-      }
-
-      // Limpiar el formulario después de guardar
-      e.target.reset();
-    });
-
-    // Leer y mostrar los datos en la tabla con opción para editar y eliminar
-    const userRef = ref(db, 'usuarios/');
-    onValue(userRef, (snapshot) => {
-      const userTableBody = document.getElementById('userTableBody');
-      userTableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenar
-
-      snapshot.forEach((childSnapshot) => {
-        const data = childSnapshot.val();
-        const userId = childSnapshot.key; // Obtener el ID único de cada documento
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="py-2 px-4 border-b">${data.nombre}</td>
-          <td class="py-2 px-4 border-b">${data.apellido}</td>
-          <td class="py-2 px-4 border-b">${data.edad}</td>
-          <td class="py-2 px-4 border-b">${data.direccion}</td>
-          <td class="py-2 px-4 border-b">
-            <button class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600" onclick="editUser('${userId}')">Editar</button>
-            <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600" onclick="deleteUser('${userId}')">Eliminar</button>
-          </td>
-        `;
-        userTableBody.appendChild(row);
-      });
-    });
-
-    // Función para editar un usuario
-    window.editUser = function(userId) {
-      const userRef = ref(db, 'usuarios/' + userId);
-      onValue(userRef, (snapshot) => {
-        const data = snapshot.val();
-        document.getElementById('nombre').value = data.nombre;
-        document.getElementById('apellido').value = data.apellido;
-        document.getElementById('edad').value = data.edad;
-        document.getElementById('direccion').value = data.direccion;
-        document.getElementById('userId').value = userId;
-        document.getElementById('formTitle').innerText = 'Editar Usuario';
-      }, { onlyOnce: true });
-    }
-
-    // Función para eliminar un usuario
-    window.deleteUser = function(userId) {
-      const userRef = ref(db, 'usuarios/' + userId);
-      remove(userRef)
-        .then(() => {
-          alert('Usuario eliminado correctamente.');
-        })
-        .catch((error) => {
-          console.error('Error al eliminar el usuario:', error);
-        });
-    }
-  </script>
-
 </body>
 </html>
